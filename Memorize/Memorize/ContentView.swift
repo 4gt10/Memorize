@@ -108,10 +108,12 @@ struct ContentView: View {
         } label: {
             VStack {
                 Image(systemName: playingCards == cardsCollection ? cardsCollection.selectedImageName : cardsCollection.imageName)
+                    .imageScale(.large)
+                    .font(.title2)
                 Text(cardsCollection.title)
+                    .font(.footnote)
                     .fontWeight(playingCards == cardsCollection ? .bold : .regular)
             }
-            .imageScale(.large)
         }
         .padding(.horizontal)
     }
