@@ -16,15 +16,10 @@ struct MemorizeView: View {
     
     var body: some View {
         VStack {
-            header
             content
+            footer
         }
         .padding()
-    }
-    
-    private var header: some View {
-        Text("Title")
-            .font(.largeTitle)
     }
     
     private var content: some View {
@@ -46,6 +41,17 @@ struct MemorizeView: View {
             }
             .padding()
         }
+    }
+    
+    private var footer: some View {
+        HStack {
+            Button {
+                viewModel.startNewGame()
+            } label: {
+                Text("New game")
+            }
+        }
+        .padding()
     }
 }
 

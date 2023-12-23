@@ -8,18 +8,31 @@
 import Foundation
 
 struct MemorizeGame<Content: Equatable> {
+    typealias CardContentFactoryClosure = (Int) -> Content
+    
+    private static func makeCards(withNumberOfPairs numberOfPairs: Int, contentFacroty: CardContentFactoryClosure) -> [Card] {
+        var result = [Card]()
+        for index in 0..<numberOfPairs {
+            result.append(.init(content: contentFacroty(index), id: "\(index)a"))
+            result.append(.init(content: contentFacroty(index), id: "\(index)b"))
+        }
+        return result.shuffled()
+    }
+    
+    private var numberOfPairsOfCards: Int
+    private var cardContentFactory: CardContentFactoryClosure
     private(set) var cards: [Card]
     
     private var firstFaceUpCardIndex: Int?
     private var secondFaceUpCardIndex: Int?
     
-    init(numberOfPairsOfCards: Int, cardContentFacroty: (Int) -> Content) {
-        var result = [Card]()
-        for index in 0..<numberOfPairsOfCards {
-            result.append(.init(content: cardContentFacroty(index), id: "\(index)a"))
-            result.append(.init(content: cardContentFacroty(index), id: "\(index)b"))
-        }
-        self.cards = result
+    init(numberOfPairsOfCards: Int, cardContentFacroty: @escaping CardContentFactoryClosure) {
+        self.numberOfPairsOfCards = numberOfPairsOfCards
+        self.cardContentFactory = cardContentFacroty
+        self.cards = Self.makeCards(
+            withNumberOfPairs: numberOfPairsOfCards,
+            contentFacroty: cardContentFacroty
+        )
     }
     
     mutating func choose(_ card: Card) {
@@ -34,6 +47,13 @@ struct MemorizeGame<Content: Equatable> {
         checkMatch()
         
         faceDownCardsIfNeeded(without: index)
+    }
+    
+    mutating func startNewGame() {
+        self.cards = Self.makeCards(
+            withNumberOfPairs: numberOfPairsOfCards,
+            contentFacroty: cardContentFactory
+        )
     }
     
     struct Card: Equatable, Identifiable {

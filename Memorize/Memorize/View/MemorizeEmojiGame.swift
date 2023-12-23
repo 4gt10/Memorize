@@ -22,4 +22,8 @@ final class MemorizeEmojiGame: ObservableObject {
     func choose(_ card: Model.Card) {
         model.choose(card)
     }
+    
+    func startNewGame() {
+        model.startNewGame()
+    }
 }

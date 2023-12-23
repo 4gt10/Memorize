@@ -2,48 +2,16 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Animals" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Animals"
-          }
-        }
-      }
+      "extractionState" : "manual"
     },
     "Halloween" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Halloween"
-          }
-        }
-      }
+      "extractionState" : "manual"
     },
-    "Title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Memorize!"
-          }
-        }
-      }
+    "New game" : {
+      "extractionState" : "manual"
     },
     "Vehicles" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vehicles"
-          }
-        }
-      }
+      "extractionState" : "manual"
     }
   },
   "version" : "1.0"
