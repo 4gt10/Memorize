@@ -5,25 +5,40 @@
 //  Created by 4gt10 on 19.12.2023.
 //
 
-import Foundation
+import UIKit
+
+private enum Constant {
+    static let numberOfPairsOfCards = 20
+}
 
 final class MemorizeEmojiGame: ObservableObject {
-    typealias Model = MemorizeGame<String>
+    typealias Game = MemorizeGame<String>
     
-    @Published private var model: Model
+    @Published private var model: Game
+    @Published private var theme: EmojiTheme
     
-    var cards: [Model.Card] { model.cards }
+    var cards: [Game.Card] { model.cards }
+    var themeTitle: String { theme.title }
+    var themeColor: UIColor { UIColor(resource: theme.colorResource ) }
     
-    init(emojiCollection: Theme) {
-        let collection = emojiCollection.collection
+    init(theme: EmojiTheme) {
+        let numberOfPairsOfCards = Constant.numberOfPairsOfCards
+        let collection = theme.makeCollection(ofCount: numberOfPairsOfCards)
         model = .init(numberOfPairsOfCards: collection.count) { collection[$0] }
+        self.theme = theme
     }
     
-    func choose(_ card: Model.Card) {
+    func choose(_ card: Game.Card) {
         model.choose(card)
     }
     
     func startNewGame() {
-        model.startNewGame()
+        guard let randomTheme = EmojiTheme.allCases.randomElement() else {
+            return
+        }
+        let numberOfPairsOfCards = Constant.numberOfPairsOfCards
+        let collection = randomTheme.makeCollection(ofCount: numberOfPairsOfCards)
+        model.startNewGame(withCardCollection: collection)
+        self.theme = randomTheme
     }
 }

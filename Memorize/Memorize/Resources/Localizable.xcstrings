@@ -4,10 +4,19 @@
     "Animals" : {
       "extractionState" : "manual"
     },
+    "Food" : {
+      "extractionState" : "manual"
+    },
     "Halloween" : {
       "extractionState" : "manual"
     },
     "New game" : {
+      "extractionState" : "manual"
+    },
+    "Professions" : {
+      "extractionState" : "manual"
+    },
+    "Smileys" : {
       "extractionState" : "manual"
     },
     "Vehicles" : {
