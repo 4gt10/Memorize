@@ -14,7 +14,7 @@ final class MemorizeEmojiGame: ObservableObject {
     
     var cards: [Model.Card] { model.cards }
     
-    init(emojiCollection: EmojiCollection) {
+    init(emojiCollection: Theme) {
         let collection = emojiCollection.collection
         model = .init(numberOfPairsOfCards: collection.count) { collection[$0] }
     }

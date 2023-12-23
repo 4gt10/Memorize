@@ -63,6 +63,66 @@ struct MemorizeGame<Content: Equatable> {
         
         var id: String
     }
+    
+    enum Theme: CaseIterable {
+        case halloween
+        case vehicles
+        case animals
+        case smileys
+        case professions
+        case food
+        
+        var collection: [String] {
+            switch self {
+            case .halloween:
+                return ["🕷️", "👹", "🎃", "💀", "🧛🏻", "🧟‍♀️", "🕸️", "👻", "😈", "👺", "🤡", "🧙‍♀️", "😱", "👽", "🍭"]
+            case .vehicles:
+                return ["🚗", "🚕", "🚙", "🚌", "🚎", "🏎️", "🚓", "🚑", "🚒", "🚐", "🛻", "🚚", "🚛", "🚜", "🛺"]
+            case .animals:
+                return ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐻‍❄️", "🐨", "🐯", "🦁", "🐮", "🐷", "🐸"]
+            case .smileys:
+                return ["😂", "😊", "😍", "🤪", "🤩", "🥳", "😭", "😳", "😎", "😇", "🥹", "🤯", "🤬", "☹️", "🤓"]
+            case .professions:
+                return ["👮‍♂️", "🧑‍🍳", "👨‍🌾", "👩‍🏫", "👨‍💻", "👩‍✈️", "👨‍🚒", "👨‍🏭", "👨‍🔧", "👨‍⚖️", "👨‍🚀", "👷‍♂️", "🕵️‍♂️", "👩‍🔬", "🧑‍🎨"]
+            case .food:
+                return ["🍎", "🍐", "🍊", "🍑", "🍋", "🍌", "🍉", "🍒", "🍓", "🌶️", "🥦", "🧅", "🍅", "🥑", "🥕"]
+            }
+        }
+        
+        var title: String {
+            switch self {
+            case .halloween:
+                return "Halloween"
+            case .vehicles:
+                return "Vehicles"
+            case .animals:
+                return "Animals"
+            case .smileys:
+                return "Smileys"
+            case .professions:
+                return "Professions"
+            case .food:
+                return "Food"
+            }
+        }
+        
+        var colorName: String {
+            switch self {
+            case .halloween:
+                return "orange"
+            case .vehicles:
+                return "red"
+            case .animals:
+                return "grey"
+            case .smileys:
+                return "yellow"
+            case .professions:
+                return "blue"
+            case .food:
+                return "green"
+            }
+        }
+    }
 }
 
 private extension MemorizeGame {
