@@ -21,20 +21,30 @@ struct MemorizeView: View {
             footer
         }
         .padding()
+        .alert("Game over".localized(args: viewModel.score), isPresented: $viewModel.shouldShowGameOverAlert) {
+            Button("Cancel", role: .cancel, action: {})
+            Button {
+                viewModel.startNewGame()
+            } label: {
+                Text("New game")
+            }
+        }
     }
     
     private var header: some View {
         HStack {
             Text(viewModel.themeTitle)
-                .font(.title)
+                .font(.largeTitle)
                 .foregroundStyle(Color(viewModel.themeColor))
+            Spacer()
         }
+        .padding(.horizontal, 6)
     }
     
     private var content: some View {
         ScrollView {
             LazyVGrid(
-                columns: [GridItem(.adaptive(minimum: 72), spacing: 0)],
+                columns: [GridItem(.adaptive(minimum: 64), spacing: 0)],
                 spacing: 0
             ) {
                 let cards = viewModel.cards
@@ -47,7 +57,6 @@ struct MemorizeView: View {
                         }
                 }
             }
-            .padding()
             .animation(.default, value: viewModel.cards)
         }
     }
@@ -59,8 +68,11 @@ struct MemorizeView: View {
             } label: {
                 Text("New game")
             }
+            Spacer()
+            Text("Score".localized(args: viewModel.score))
         }
-        .padding()
+        .padding(.horizontal, 8)
+        .padding(.top)
     }
 }
 

@@ -14,10 +14,14 @@ private enum Constant {
 final class MemorizeEmojiGame: ObservableObject {
     typealias Game = MemorizeGame<String>
     
-    @Published private var model: Game
+    @Published private var model: Game {
+        didSet { shouldShowGameOverAlert = model.isGameOver }
+    }
     @Published private var theme: EmojiTheme
+    @Published var shouldShowGameOverAlert = false
     
     var cards: [Game.Card] { model.cards }
+    var score: Int { model.score }
     var themeTitle: String { theme.title }
     var themeColor: UIColor { UIColor(resource: theme.colorResource ) }
     

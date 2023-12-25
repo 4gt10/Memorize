@@ -7,6 +7,13 @@
 
 import Foundation
 
+private enum Constant {
+    enum Score {
+        static let reward = 2
+        static let penalty = -1
+    }
+}
+
 struct MemorizeGame<Content: Equatable> {
     typealias CardContentFactoryClosure = (Int) -> Content
     
@@ -21,6 +28,8 @@ struct MemorizeGame<Content: Equatable> {
     }
     
     private(set) var cards: [Card]
+    private(set) var score = 0
+    var isGameOver: Bool { cards.reduce(true, { $0 && $1.isMatched }) }
     
     private var firstFaceUpCardIndex: Int?
     private var secondFaceUpCardIndex: Int?
@@ -36,26 +45,25 @@ struct MemorizeGame<Content: Equatable> {
         guard let index = cards.firstIndex(of: card), !cards[index].isMatched else {
             return
         }
-        
         cards[index].isFaceUp.toggle()
         
         updateFaceUpCardIndex(index)
-        
         checkMatch()
-        
-        faceDownCardsIfNeeded(without: index)
+        faceDownCardsIfNeeded(excludingCardAt: index)
     }
     
     mutating func startNewGame(withCardCollection cardCollection: [Content]) {
         cards = Self.makeCards(withNumberOfPairs: cardCollection.count) { cardCollection[$0] }
+        score = 0
     }
     
     struct Card: Equatable, Identifiable {
         var isFaceUp = false
         var isMatched = false
+        var isSeen = false
         let content: Content
         
-        var id: String
+        let id: String
     }
 }
 
@@ -79,16 +87,23 @@ private extension MemorizeGame {
     }
     
     mutating func checkMatch() {
-        guard let firstFaceUpCardIndex,
-              let secondFaceUpCardIndex,
-              cards[firstFaceUpCardIndex].content == cards[secondFaceUpCardIndex].content else {
+        guard let firstIndex = firstFaceUpCardIndex,
+              let secondIndex = secondFaceUpCardIndex else {
             return
         }
-        cards[firstFaceUpCardIndex].isMatched = true
-        cards[secondFaceUpCardIndex].isMatched = true
+        if cards[firstIndex].content == cards[secondIndex].content {
+            cards[firstIndex].isMatched = true
+            cards[secondIndex].isMatched = true
+            score += Constant.Score.reward
+        } else if cards[firstIndex].isSeen || cards[secondIndex].isSeen {
+            score += Constant.Score.penalty
+        } else {
+            cards[firstIndex].isSeen = true
+            cards[secondIndex].isSeen = true
+        }
     }
     
-    mutating func faceDownCardsIfNeeded(without excludedIndex: Int) {
+    mutating func faceDownCardsIfNeeded(excludingCardAt excludedIndex: Int) {
         guard cards.filter({ $0.isFaceUp }).count > 2 else {
             return
         }

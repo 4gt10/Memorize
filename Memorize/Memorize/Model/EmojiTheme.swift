@@ -16,7 +16,7 @@ enum EmojiTheme: CaseIterable {
     case professions
     case food
     
-    func makeCollection(ofCount count: Int) -> [String] {
+    func makeCollection(ofCount count: Int, shuffled isShuffled: Bool = true) -> [String] {
         var collection = [String]()
         switch self {
         case .halloween:
@@ -33,28 +33,28 @@ enum EmojiTheme: CaseIterable {
             collection = ["🍎", "🍐", "🍊", "🍑", "🍋", "🍌", "🍉", "🍒", "🍓", "🌶️", "🥦", "🧅", "🍅", "🥑", "🥕"]
         }
         let endIndex = max(2, min(count, collection.count))
-        return Array(collection.shuffled().prefix(upTo: endIndex))
+        collection = isShuffled ? collection.shuffled() : collection
+        return Array(collection.prefix(upTo: endIndex))
     }
     
     var title: String {
-        let prefix = makeCollection(ofCount: 3)
-        let suffix = makeCollection(ofCount: 3)
+        let suffix = makeCollection(ofCount: 3, shuffled: false)
         var name = ""
         switch self {
         case .halloween:
-            name = "Halloween"
+            name = "Halloween".localized()
         case .vehicles:
-            name = "Vehicles"
+            name = "Vehicles".localized()
         case .animals:
-            name = "Animals"
+            name = "Animals".localized()
         case .smileys:
-            name = "Smileys"
+            name = "Smileys".localized()
         case .professions:
-            name = "Professions"
+            name = "Professions".localized()
         case .food:
-            name = "Food"
+            name = "Food".localized()
         }
-        return "\(prefix.joined()) \(name) \(suffix.joined())"
+        return "\(name) \(suffix.joined())"
     }
     
     var colorResource: ColorResource {
