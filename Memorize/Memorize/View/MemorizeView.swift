@@ -42,23 +42,14 @@ struct MemorizeView: View {
     }
     
     private var content: some View {
-        ScrollView {
-            LazyVGrid(
-                columns: [GridItem(.adaptive(minimum: 64), spacing: 0)],
-                spacing: 0
-            ) {
-                let cards = viewModel.cards
-                ForEach(cards) { card in
-                    Card(card, color: viewModel.themeColor)
-                        .aspectRatio(2/3, contentMode: .fit)
-                        .padding(4)
-                        .onTapGesture {
-                            viewModel.choose(card)
-                        }
+        AspectVGrid(viewModel.cards) { card in
+            Card(card, color: viewModel.themeColor)
+                .padding(4)
+                .onTapGesture {
+                    viewModel.choose(card)
                 }
-            }
-            .animation(.default, value: viewModel.cards)
         }
+        .animation(.default, value: viewModel.cards)
     }
     
     private var footer: some View {
