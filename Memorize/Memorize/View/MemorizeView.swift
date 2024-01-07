@@ -15,6 +15,8 @@ struct MemorizeView: View {
     @State private var lastScoreChange: Int?
     @State private var scoreChangeYOffset: CGFloat = 0
     
+    private let aspectRatio: CGFloat = 2/3
+    
     init(viewModel: MemorizeEmojiGame) {
         self.viewModel = viewModel
     }
@@ -32,12 +34,17 @@ struct MemorizeView: View {
         .alert("Game over".localized(args: viewModel.score), isPresented: $viewModel.shouldShowGameOverAlert) {
             Button("Cancel", role: .cancel, action: {})
             Button {
-                viewModel.startNewGame()
+                startNewGame()
             } label: {
                 Text("New game")
             }
         }
+        .onAppear {
+            startNewGame()
+        }
     }
+    
+    // MARK: - Subviews
     
     private var header: some View {
         HStack {
@@ -49,26 +56,44 @@ struct MemorizeView: View {
     }
     
     private var content: some View {
-        AspectVGrid(viewModel.cards) { card in
-            ZStack {
-                cardView(with: card)
-                scoreChangeView(with: scoreChange(causedBy: card))
+        AspectVGrid(viewModel.cards, aspectRatio: aspectRatio) { card in
+            if dealtCardIds.contains(where: { card.id == $0 }) {
+                view(for: card)
+                    .zIndex(card.id == lastChosenCardId ? 1 : 0)
             }
-            .zIndex(card.id == lastChosenCardId ? 1 : 0)
         }
     }
     
     private var footer: some View {
-        HStack {
+        HStack(alignment: .bottom) {
+            Text("Score".localized(args: viewModel.score))
+            Spacer()
+            deck
+            Spacer()
             Button {
-                withAnimation {
-                    viewModel.startNewGame()
-                }
+                startNewGame()
             } label: {
                 Text("New game")
             }
-            Spacer()
-            Text("Score".localized(args: viewModel.score))
+        }
+    }
+    
+    private var deck: some View {
+        ZStack {
+            ForEach(undealtCards) {
+                let width: CGFloat = 50
+                view(for: $0)
+                    .frame(width: width, height: width / aspectRatio)
+            }
+        }
+    }
+    
+    private func view(for card: Card) -> some View {
+        ZStack {
+            cardView(with: card)
+                .matchedGeometryEffect(id: card.id, in: dealingNamespace)
+                .transition(.asymmetric(insertion: .identity, removal: .identity))
+            scoreChangeView(with: scoreChange(causedBy: card))
         }
     }
     
@@ -92,9 +117,10 @@ struct MemorizeView: View {
     
     private func scoreChangeView(with scoreChange: Int) -> some View {
         let maxYOffset: CGFloat = 100
+        let opacity = CGFloat(maxYOffset - abs(scoreChangeYOffset)) / maxYOffset
         return NumberView(number: scoreChange)
             .offset(x: 0, y: scoreChangeYOffset)
-            .opacity(CGFloat(maxYOffset - abs(scoreChangeYOffset)) / maxYOffset)
+            .opacity(opacity)
             .onAppear {
                 withAnimation(.easeIn(duration: 1)) {
                     scoreChangeYOffset = scoreChange > 0 ? -maxYOffset : maxYOffset
@@ -105,7 +131,41 @@ struct MemorizeView: View {
             }
     }
     
-    func scoreChange(causedBy card: Card) -> Int {
+    // MARK: - Dealing
+    
+    @State private var dealtCardIds: [Card.ID] = []
+    private var undealtCards: [Card] {
+        viewModel.cards.filter { !isDealt($0) }
+    }
+    @Namespace private var dealingNamespace
+    
+    private func isDealt(_ card: Card) -> Bool {
+        dealtCardIds.contains(card.id)
+    }
+    
+    private func deal() {
+        dealtCardIds.removeAll()
+        
+        var delay: TimeInterval = 0
+        for index in 0..<undealtCards.count {
+            withAnimation(.easeInOut(duration: 0.3).delay(delay)) {
+                dealtCardIds.append(viewModel.cards[index].id)
+                delay += 0.15
+            }
+        }
+    }
+    
+    // MARK: - Helpers
+    
+    private func startNewGame() {
+        lastChosenCardId = nil
+        lastScoreChange = nil
+        
+        viewModel.startNewGame()
+        deal()
+    }
+    
+    private func scoreChange(causedBy card: Card) -> Int {
         guard card.id == lastChosenCardId else {
             return 0
         }
