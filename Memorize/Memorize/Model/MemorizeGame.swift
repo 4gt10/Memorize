@@ -12,6 +12,9 @@ private enum Constant {
         static let reward = 2
         static let penalty = -1
     }
+    enum BonusTime {
+        static let limit: TimeInterval = 10
+    }
 }
 
 struct MemorizeGame<Content: Equatable> {
@@ -58,12 +61,62 @@ struct MemorizeGame<Content: Equatable> {
     }
     
     struct Card: Equatable, Identifiable {
-        var isFaceUp = false
-        var isMatched = false
+        var isFaceUp = false {
+            didSet {
+                if !oldValue && isFaceUp && !isMatched {
+                    startUsingBonusTime()
+                } else {
+                    stopUsingBonusTime()
+                }
+            }
+        }
+        var isMatched = false {
+            didSet {
+                if isMatched {
+                    stopUsingBonusTime()
+                }
+            }
+        }
         var isSeen = false
         let content: Content
         
         let id: String
+        
+        init(content: Content, id: ID) {
+            self.content = content
+            self.id = id
+        }
+        
+        // MARK: - Bonus time
+        
+        var bonusPoints: Int { Int(bonusTime) }
+        
+        private let bonusTimeLimit = Constant.BonusTime.limit
+        private var bonusTime = Constant.BonusTime.limit
+        private var startTimeInterval: TimeInterval?
+        
+        func bonusTimePercentage(forDate date: Date) -> Double {
+            calculateBonusTime(forDate: date) / bonusTimeLimit
+        }
+        
+        private mutating func startUsingBonusTime() {
+            guard bonusTime > 0 else {
+                return
+            }
+            startTimeInterval = Date().timeIntervalSince1970
+        }
+        
+        private mutating func stopUsingBonusTime() {
+            bonusTime = calculateBonusTime(forDate: Date())
+            startTimeInterval = nil
+        }
+        
+        private func calculateBonusTime(forDate date: Date) -> Double {
+            guard let startTimeInterval, bonusTime > 0 else {
+                return bonusTime
+            }
+            return max((bonusTime - (date.timeIntervalSince1970 - startTimeInterval)), 0)
+        }
     }
 }
 
@@ -94,7 +147,7 @@ private extension MemorizeGame {
         if cards[firstIndex].content == cards[secondIndex].content {
             cards[firstIndex].isMatched = true
             cards[secondIndex].isMatched = true
-            score += Constant.Score.reward
+            score += Constant.Score.reward + cards[firstIndex].bonusPoints + cards[secondIndex].bonusPoints
         } else if cards[firstIndex].isSeen || cards[secondIndex].isSeen {
             score += Constant.Score.penalty
         } else {
