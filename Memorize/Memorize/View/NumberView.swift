@@ -16,6 +16,8 @@ struct NumberView: View {
                 .font(.largeTitle)
                 .foregroundStyle(number > 0 ? .green : .red)
                 .shadow(radius: 1, x: 1, y: 1)
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
         }
     }
 }
