@@ -62,6 +62,17 @@
         }
       }
     },
+    "Memorize" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мемо"
+          }
+        }
+      }
+    },
     "New game" : {
       "extractionState" : "manual",
       "localizations" : {

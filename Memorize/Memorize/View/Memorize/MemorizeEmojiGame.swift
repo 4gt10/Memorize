@@ -37,12 +37,8 @@ final class MemorizeEmojiGame: ObservableObject {
     }
     
     func startNewGame() {
-        guard let randomTheme = EmojiTheme.allCases.randomElement() else {
-            return
-        }
         let numberOfPairsOfCards = Constant.numberOfPairsOfCards
-        let collection = randomTheme.makeCollection(ofCount: numberOfPairsOfCards)
+        let collection = theme.makeCollection(ofCount: numberOfPairsOfCards)
         model.startNewGame(withCardCollection: collection)
-        self.theme = randomTheme
     }
 }
