@@ -5,72 +5,61 @@
 //  Created by 4gt10 on 23.12.2023.
 //
 
-import Foundation
+import SwiftUI
 import DeveloperToolsSupport.DeveloperToolsSupport
 
-enum EmojiTheme: CaseIterable {
-    case halloween
-    case vehicles
-    case animals
-    case smileys
-    case professions
-    case food
+struct EmojiTheme: Hashable, Identifiable {
+    var name: String
+    var color: Color
+    var pairsCount: Int
+    var emojis: String
     
-    func makeCollection(ofCount count: Int, shuffled isShuffled: Bool = true) -> [String] {
-        var collection = [String]()
-        switch self {
-        case .halloween:
-            collection = ["🕷️", "👹", "🎃", "💀", "🧛🏻", "🧟‍♀️", "🕸️", "👻", "😈", "👺", "🤡", "🧙‍♀️", "😱", "👽", "🍭"]
-        case .vehicles:
-            collection = ["🚗", "🚕", "🚙", "🚌", "🚎", "🏎️", "🚓", "🚑", "🚒", "🚐", "🛻", "🚚", "🚛", "🚜", "🛺"]
-        case .animals:
-            collection = ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐻‍❄️", "🐨", "🐯", "🦁", "🐮", "🐷", "🐸"]
-        case .smileys:
-            collection = ["😂", "😊", "😍", "🤪", "🤩", "🥳", "😭", "😳", "😎", "😇", "🥹", "🤯", "🤬", "☹️", "🤓"]
-        case .professions:
-            collection = ["👮‍♂️", "🧑‍🍳", "👨‍🌾", "👩‍🏫", "👨‍💻", "👩‍✈️", "👨‍🚒", "👨‍🏭", "👨‍🔧", "👨‍⚖️", "👨‍🚀", "👷‍♂️", "🕵️‍♂️", "👩‍🔬", "🧑‍🎨"]
-        case .food:
-            collection = ["🍎", "🍐", "🍊", "🍑", "🍋", "🍌", "🍉", "🍒", "🍓", "🌶️", "🥦", "🧅", "🍅", "🥑", "🥕"]
-        }
-        let endIndex = max(2, min(count, collection.count))
-        collection = isShuffled ? collection.shuffled() : collection
-        return Array(collection.prefix(upTo: endIndex))
-    }
+    let id = UUID()
     
-    var title: String {
-        let suffix = makeCollection(ofCount: 3, shuffled: false)
-        var name = ""
-        switch self {
-        case .halloween:
-            name = "Halloween".localized()
-        case .vehicles:
-            name = "Vehicles".localized()
-        case .animals:
-            name = "Animals".localized()
-        case .smileys:
-            name = "Smileys".localized()
-        case .professions:
-            name = "Professions".localized()
-        case .food:
-            name = "Food".localized()
-        }
-        return "\(name) \(suffix.joined())"
-    }
-    
-    var colorResource: ColorResource {
-        switch self {
-        case .halloween:
-            return .orange
-        case .vehicles:
-            return .red
-        case .animals:
-            return .brown
-        case .smileys:
-            return .lightOrange
-        case .professions:
-            return .blue
-        case .food:
-            return .green
-        }
-    }
+    static let minimumPairsToPlay = 2
+    static let defaultPairsCount = 5
+    static var builtins: [EmojiTheme] {[
+        EmojiTheme(
+            name: "Vehicles",
+            color: .red,
+            pairsCount: defaultPairsCount,
+            emojis: "🚙🚗🚘🚕🚖🏎🚚🛻🚛🚐🚓🚔🚑🚒🚀✈️🛫🛬🛩🚁🛸🚲🏍🛶⛵️🚤🛥🛳⛴🚢🚂🚝🚅🚆🚊🚉🚇🛺🚜"
+        ),
+        EmojiTheme(
+            name: "Sports",
+            color: .blue,
+            pairsCount: defaultPairsCount,
+            emojis: "🏈⚾️🏀⚽️🎾🏐🥏🏓⛳️🥅🥌🏂⛷🎳"
+        ),
+        EmojiTheme(
+            name: "Animals",
+            color: .brown,
+            pairsCount: defaultPairsCount,
+            emojis: "🐥🐣🐂🐄🐎🐖🐏🐑🦙🐐🐓🐁🐀🐒🦆🦅🦉🦇🐢🐍🦎🦖🦕🐅🐆🦓🦍🦧🦣🐘🦛🦏🐪🐫🦒🦘🦬🐃🦙🐐🦌🐕🐩🦮🐈🦤🦢🦩🕊🦝🦨🦡🦫🦦🦥🐿🦔"
+        ),
+        EmojiTheme(
+            name: "Animal Faces",
+            color: .pink,
+            pairsCount: defaultPairsCount,
+            emojis: "🐵🙈🙊🙉🐶🐱🐭🐹🐰🦊🐻🐼🐻‍❄️🐨🐯🦁🐮🐷🐸🐲"
+        ),
+        EmojiTheme(
+            name: "Flora",
+            color: .mint,
+            pairsCount: defaultPairsCount,
+            emojis: "🌲🌴🌿☘️🍀🍁🍄🌾💐🌷🌹🥀🌺🌸🌼🌻"
+        ),
+        EmojiTheme(
+            name: "Weather",
+            color: .teal,
+            pairsCount: defaultPairsCount,
+            emojis: "☀️🌤⛅️🌥☁️🌦🌧⛈🌩🌨❄️💨☔️💧💦🌊☂️🌫🌪"
+        ),
+        EmojiTheme(
+            name: "Faces",
+            color: .orange,
+            pairsCount: defaultPairsCount,
+            emojis: "😀😃😄😁😆😅😂🤣🥲☺️😊😇🙂🙃😉😌😍🥰😘😗😙😚😋😛😝😜🤪🤨🧐🤓😎🥸🤩🥳😏😞😔😟😕🙁☹️😣😖😫😩🥺😢😭😤😠😡🤯😳🥶😥😓🤗🤔🤭🤫🤥😬🙄😯😧🥱😴🤮😷🤧🤒🤠"
+        )
+    ]}
 }

@@ -21,6 +21,10 @@ extension String {
         }
     }
     
+    mutating func remove(_ ch: String) {
+        removeAll(where: { $0 == Character(ch) })
+    }
+    
     func localized(args: CVarArg...) -> String {
         String.localizedStringWithFormat(localized(), args)
     }

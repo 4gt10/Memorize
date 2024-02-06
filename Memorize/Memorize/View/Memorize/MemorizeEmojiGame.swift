@@ -5,11 +5,7 @@
 //  Created by 4gt10 on 19.12.2023.
 //
 
-import UIKit
-
-private enum Constant {
-    static let numberOfPairsOfCards = 20
-}
+import SwiftUI
 
 final class MemorizeEmojiGame: ObservableObject {
     typealias Game = MemorizeGame<String>
@@ -22,23 +18,34 @@ final class MemorizeEmojiGame: ObservableObject {
     
     var cards: [Game.Card] { model.cards }
     var score: Int { model.score }
-    var themeTitle: String { theme.title }
-    var themeColor: UIColor { UIColor(resource: theme.colorResource ) }
+    var themeTitle: String { theme.name }
+    var themeColor: Color { theme.color }
     
     init(theme: EmojiTheme) {
-        let numberOfPairsOfCards = Constant.numberOfPairsOfCards
-        let collection = theme.makeCollection(ofCount: numberOfPairsOfCards)
+        let collection = Self.makeCollection(ofTheme: theme)
         model = .init(numberOfPairsOfCards: collection.count) { collection[$0] }
         self.theme = theme
     }
+    
+    // MARK: - Intents
     
     func choose(_ card: Game.Card) {
         model.choose(card)
     }
     
     func startNewGame() {
-        let numberOfPairsOfCards = Constant.numberOfPairsOfCards
-        let collection = theme.makeCollection(ofCount: numberOfPairsOfCards)
+        let collection = Self.makeCollection(ofTheme: theme)
         model.startNewGame(withCardCollection: collection)
+    }
+}
+
+// MARK: - Private methods
+
+private extension MemorizeEmojiGame {
+    static func makeCollection(ofTheme theme: EmojiTheme, shuffled isShuffled: Bool = true) -> [String] {
+        var collection = theme.emojis.map { String($0) }
+        let endIndex = max(2, min(theme.pairsCount, collection.count))
+        collection = isShuffled ? collection.shuffled() : collection
+        return Array(collection.prefix(upTo: endIndex))
     }
 }

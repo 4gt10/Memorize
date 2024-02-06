@@ -178,9 +178,9 @@ struct CardView: View {
     let card: Card
     let color: Color
     
-    init(_ card: Card, color: UIColor) {
+    init(_ card: Card, color: Color) {
         self.card = card
-        self.color = Color(color)
+        self.color = color
     }
     
     var body: some View {
@@ -205,5 +205,5 @@ struct CardView: View {
 }
 
 #Preview {
-    MemorizeView(viewModel: .init(theme: .halloween))
+    MemorizeView(viewModel: .init(theme: .builtins.first!))
 }

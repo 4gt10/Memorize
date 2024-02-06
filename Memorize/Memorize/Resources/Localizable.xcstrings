@@ -1,6 +1,17 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Add Emojis Here" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавьте эмоджи"
+          }
+        }
+      }
+    },
     "Animals" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -19,6 +30,70 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Отмена"
+          }
+        }
+      }
+    },
+    "Cards Pairs Count" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cards Pairs Count: %d"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Количество пар карт: %d"
+          }
+        }
+      }
+    },
+    "Cards Pairs Count Error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Insufficient amount of cards☹️\nPlease add at least %d pair of cards to be able to play🙂"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Insufficient amount of cards☹️\nPlease add at least %d pairs of cards to be able to play🙂"
+                }
+              }
+            }
+          }
+        },
+        "ru" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Недостаточно карт☹️\nПожалуйста, добавьте как минимум %d пары карт, чтобы иметь возможность играть🙂"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Недостаточно карт☹️\nПожалуйста, добавьте как минимум %d пару карт, чтобы иметь возможность играть🙂"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Недостаточно карт☹️\nПожалуйста, добавьте как минимум %d пар карт, чтобы иметь возможность играть🙂"
+                }
+              }
+            }
           }
         }
       }
@@ -84,6 +159,28 @@
         }
       }
     },
+    "Pairs count error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Insufficient amount of cards☹️\nPlease add at least %d pairs to be able to play"
+          }
+        }
+      }
+    },
+    "Pick Theme Color" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выберите цвет темы"
+          }
+        }
+      }
+    },
     "Professions" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -119,6 +216,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Смайлики"
+          }
+        }
+      }
+    },
+    "Tap to Remove Emojis" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нажмите на эмоджи для удаления"
+          }
+        }
+      }
+    },
+    "Theme Name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Имя темы"
           }
         }
       }
