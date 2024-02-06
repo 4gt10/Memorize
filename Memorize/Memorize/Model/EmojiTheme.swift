@@ -8,13 +8,13 @@
 import SwiftUI
 import DeveloperToolsSupport.DeveloperToolsSupport
 
-struct EmojiTheme: Hashable, Identifiable {
+struct EmojiTheme: Hashable, Identifiable, Codable {
     var name: String
     var color: Color
     var pairsCount: Int
     var emojis: String
     
-    let id = UUID()
+    private(set) var id = UUID()
     
     static let minimumPairsToPlay = 2
     static let defaultPairsCount = 5
