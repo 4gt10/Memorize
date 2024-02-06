@@ -17,7 +17,7 @@ struct EmojiTheme: Hashable, Identifiable, Codable {
     private(set) var id = UUID()
     
     static let minimumPairsToPlay = 2
-    static let defaultPairsCount = 5
+    static let defaultPairsCount = 10
     static var builtins: [EmojiTheme] {[
         EmojiTheme(
             name: "Vehicles",
