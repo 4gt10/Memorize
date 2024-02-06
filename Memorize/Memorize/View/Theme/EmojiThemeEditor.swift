@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EmojiThemeEditorView: View {
     private enum Constant {
-        static let emojiSize = CGFloat(40.0)
+        static let emojiSize = CGFloat(32.0)
         static let emojiFont = Font.system(size: emojiSize)
     }
     
