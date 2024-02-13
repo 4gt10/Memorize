@@ -59,7 +59,12 @@ struct EmojiThemeManagerView: View {
     
     private func themeListItem(_ theme: EmojiTheme) -> some View {
         VStack(alignment: .leading) {
-            Text(theme.name)
+            HStack {
+                Circle()
+                    .foregroundColor(theme.color)
+                    .frame(width: 8, height: 8)
+                Text("\(theme.name) - \("Pairs of cards count".localized(args: theme.pairsCount))")
+            }
             Text(theme.emojis)
                 .lineLimit(1)
                 .font(.caption)
